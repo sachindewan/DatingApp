@@ -10,15 +10,28 @@ import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error.interceptor.service';
+import { MessagesComponent } from './messages/messages.component';
+import { MemberListComponent } from './member-list/member-list.component';
+import { ListsComponent } from './lists/lists.component';
+import { RoutesModule } from './routes';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, HomeComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    NavComponent,
+    RegisterComponent,
+    MessagesComponent,
+    MemberListComponent,
+    ListsComponent,
+  ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
     BsDropdownModule.forRoot(),
+    RoutesModule,
   ],
   providers: [ErrorInterceptorProvider],
   bootstrap: [AppComponent],
