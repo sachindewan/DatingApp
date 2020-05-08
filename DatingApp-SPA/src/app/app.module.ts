@@ -6,6 +6,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
+import { NgxGalleryModule } from 'ngx-gallery-9';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -18,6 +19,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { ListsComponent } from './lists/lists.component';
 import { RoutesModule } from './routes';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberDetailResolver } from './_resolver/member-detail-resolver';
+import { MemberListResolver } from './_resolver/member-list-resolver';
 
 export function tokenGenerator() {
   return localStorage.getItem('token');
@@ -43,6 +46,7 @@ export function tokenGenerator() {
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     RoutesModule,
+    NgxGalleryModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGenerator,
@@ -51,7 +55,11 @@ export function tokenGenerator() {
       },
     }),
   ],
-  providers: [ErrorInterceptorProvider],
+  providers: [
+    ErrorInterceptorProvider,
+    MemberDetailResolver,
+    MemberListResolver,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

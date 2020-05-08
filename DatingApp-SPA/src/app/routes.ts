@@ -8,6 +8,8 @@ import { MemberListComponent } from './members/member-list/member-list.component
 import { AuthGuard } from './_guards/auth.guard';
 import { AuthService } from './_services/auth.service';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
+import { MemberDetailResolver } from './_resolver/member-detail-resolver';
+import { MemberListResolver } from './_resolver/member-list-resolver';
 
 export const routes: Routes = [
   {
@@ -26,10 +28,12 @@ export const routes: Routes = [
       {
         path: 'members',
         component: MemberListComponent,
+        resolve: { users: MemberListResolver },
       },
       {
         path: 'member/:id',
         component: MemberDetailComponent,
+        resolve: { user: MemberDetailResolver },
       },
       {
         path: 'messages',
