@@ -21,7 +21,7 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/member';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/members';
     this.authService.login(this.model).subscribe(
       (next) => {
         this.alertify.success('Logged in was successfull');
