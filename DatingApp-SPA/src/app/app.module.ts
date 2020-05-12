@@ -21,6 +21,9 @@ import { RoutesModule } from './routes';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './_resolver/member-detail-resolver';
 import { MemberListResolver } from './_resolver/member-list-resolver';
+import { MemberEditComponent } from './members/member-edit/member-edit.component';
+import { MemberEditResolver } from './_resolver/member-edit-resolver';
+import { PreventUnSavedChages } from './_guards/prevent-unsaved-changes.guard';
 
 export function tokenGenerator() {
   return localStorage.getItem('token');
@@ -37,6 +40,7 @@ export function tokenGenerator() {
     MemberCardComponent,
     MemberDetailComponent,
     ListsComponent,
+    MemberEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +63,8 @@ export function tokenGenerator() {
     ErrorInterceptorProvider,
     MemberDetailResolver,
     MemberListResolver,
+    MemberEditResolver,
+    PreventUnSavedChages,
   ],
   bootstrap: [AppComponent],
 })

@@ -79,7 +79,6 @@ namespace DatingApp.API
             }
 
             //app.UseHttpsRedirection();
-
             app.UseRouting();
 
             //adding the service to support CORS request
