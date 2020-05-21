@@ -11,6 +11,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class NavComponent implements OnInit {
   model: any = {};
   returnUrl: string;
+  photoUrl: string;
   constructor(
     public authService: AuthService,
     private alertify: AlertifyService,
@@ -18,7 +19,11 @@ export class NavComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.authService.currentPhoto.subscribe((photoUrl) => {
+      this.photoUrl = photoUrl;
+    });
+  }
 
   login() {
     this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/members';
@@ -40,6 +45,9 @@ export class NavComponent implements OnInit {
   }
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.authService.decodedToken = null;
+    this.authService.currentUser = null;
     this.router.navigate(['/']);
   }
 }
