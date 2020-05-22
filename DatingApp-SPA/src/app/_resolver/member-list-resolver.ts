@@ -8,18 +8,26 @@ import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class MemberListResolver implements Resolve<User[]> {
+  pageNumber = 1;
+  pageSize = 5;
+  userParams: any = {};
   constructor(
     private userService: UserService,
     private alertify: AlertifyService,
     private router: Router
-  ) {}
+  ) {
+    this.userParams.minAge = 18;
+    this.userParams.maxAge = 99;
+  }
   resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
-    return this.userService.getUsers().pipe(
-      catchError((error) => {
-        this.alertify.error(error);
-        this.router.navigate(['/home']);
-        return of(null);
-      })
-    );
+    return this.userService
+      .getUsers(this.pageNumber, this.pageSize, this.userParams)
+      .pipe(
+        catchError((error) => {
+          this.alertify.error(error);
+          this.router.navigate(['/home']);
+          return of(null);
+        })
+      );
   }
 }
