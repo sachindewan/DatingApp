@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Dtos;
 using DatingApp.API.Helpers;
+using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace DatingApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ServiceFilter(typeof(LogUserActivity))]
+    [ServiceFilter(typeof(AutherizeCurrentLoggedInUser))]
     [Authorize]
     [ApiController]
     public class UserController : ControllerBase
@@ -61,6 +63,36 @@ namespace DatingApp.API.Controllers
                 return NoContent();
             throw new Exception($"Updating user {id} failed on save");
 
+        }
+        [HttpPost("{userId}/like/{reciepentId}")]
+        public async Task<IActionResult> LikeUser(int userId,int reciepentId)
+        {
+            if (userId != int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+            var like = await _datingRepository.GetLike(userId, reciepentId);
+            if(like != null)
+            {
+                return BadRequest("You already liked this user");
+            }
+            if(await _datingRepository.GetUser(reciepentId)==null)
+            {
+                return NotFound();
+            }
+
+            like = new Models.Like
+            {
+                LikerId = userId,
+                LikeeId = reciepentId
+            };
+
+            _datingRepository.Add<Like>(like);
+            if(await _datingRepository.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest("Failed to like user");
         }
     }
 }

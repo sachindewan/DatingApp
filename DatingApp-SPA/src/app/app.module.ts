@@ -31,6 +31,9 @@ import { MemberEditResolver } from './_resolver/member-edit-resolver';
 import { PreventUnSavedChages } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { ControlMessageComponent } from './_helper/control-message/control-message.component';
+import { ListResolver } from './_resolver/list-resolver';
+import { MessageResolver } from './_resolver/message-resolver';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 export function tokenGenerator() {
   return localStorage.getItem('token');
@@ -58,6 +61,7 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     PhotoEditorComponent,
     ControlMessageComponent,
     TimeAgoExtendsPipe,
+    MemberMessagesComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,6 +91,8 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     MemberListResolver,
     MemberEditResolver,
     PreventUnSavedChages,
+    ListResolver,
+    MessageResolver,
   ],
   bootstrap: [AppComponent],
 })

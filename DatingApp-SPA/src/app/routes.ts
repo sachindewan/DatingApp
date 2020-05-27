@@ -13,6 +13,8 @@ import { MemberListResolver } from './_resolver/member-list-resolver';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolver/member-edit-resolver';
 import { PreventUnSavedChages } from './_guards/prevent-unsaved-changes.guard';
+import { ListResolver } from './_resolver/list-resolver';
+import { MessageResolver } from './_resolver/message-resolver';
 
 export const routes: Routes = [
   {
@@ -27,6 +29,7 @@ export const routes: Routes = [
       {
         path: 'lists',
         component: ListsComponent,
+        resolve: { users: ListResolver },
       },
       {
         path: 'members',
@@ -47,6 +50,7 @@ export const routes: Routes = [
       {
         path: 'messages',
         component: MessagesComponent,
+        resolve: { messages: MessageResolver },
       },
     ],
   },

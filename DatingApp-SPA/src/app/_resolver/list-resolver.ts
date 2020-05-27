@@ -7,21 +7,24 @@ import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class MemberListResolver implements Resolve<User[]> {
+export class ListResolver implements Resolve<User[]> {
   pageNumber = 1;
   pageSize = 5;
   userParams: any = {};
+  likesParams = 'Likers';
   constructor(
     private userService: UserService,
     private alertify: AlertifyService,
     private router: Router
-  ) {
-    // this.userParams.minAge = 18;
-    // this.userParams.maxAge = 99;
-  }
+  ) {}
   resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
     return this.userService
-      .getUsers(this.pageNumber, this.pageSize, this.userParams)
+      .getUsers(
+        this.pageNumber,
+        this.pageSize,
+        this.userParams,
+        this.likesParams
+      )
       .pipe(
         catchError((error) => {
           this.alertify.error(error);
