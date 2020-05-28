@@ -1,7 +1,9 @@
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DatingApp.API.Data
@@ -17,12 +19,10 @@ namespace DatingApp.API.Data
 
         public async Task<User> Login(string username, string password)
         {
-            var user = await _datacontext.Users.Include(p=>p.Photos).FirstOrDefaultAsync(x => x.UserName == username);
-
+            var user = await _datacontext.Users.FirstOrDefaultAsync(x => x.UserName == username);
             if (user == null) return null;
 
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt)) return null;
-
             return user;
         }
 

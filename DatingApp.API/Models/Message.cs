@@ -9,9 +9,9 @@ namespace DatingApp.API.Models
     {
         public int Id { get; set; }
         public int SenderId { get; set; }
-        public User Sender { get; set; }
+        public virtual User Sender { get; set; }
         public int RecieverId { get; set; }
-        public User Reciever { get; set; }
+        public virtual User Reciever { get; set; }
         public string  Content { get; set; }
         public bool IsRead { get; set; }
         public DateTime? DateRead { get; set; }
