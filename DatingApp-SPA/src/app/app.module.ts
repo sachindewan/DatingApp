@@ -12,6 +12,7 @@ import { FileUploadModule } from 'ng2-file-upload';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -34,6 +35,11 @@ import { ControlMessageComponent } from './_helper/control-message/control-messa
 import { ListResolver } from './_resolver/list-resolver';
 import { MessageResolver } from './_resolver/message-resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasroleDirective } from './_directive/hasrole.directive';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { RolesModelComponent } from './admin/roles-model/roles-model.component';
 
 export function tokenGenerator() {
   return localStorage.getItem('token');
@@ -62,6 +68,11 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     ControlMessageComponent,
     TimeAgoExtendsPipe,
     MemberMessagesComponent,
+    AdminPanelComponent,
+    HasroleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModelComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +86,7 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     PaginationModule.forRoot(),
     ButtonsModule.forRoot(),
     RoutesModule,
+    ModalModule.forRoot(),
     NgxGalleryModule,
     FileUploadModule,
     JwtModule.forRoot({
@@ -95,5 +107,6 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     MessageResolver,
   ],
   bootstrap: [AppComponent],
+  entryComponents: [RolesModelComponent],
 })
 export class AppModule {}

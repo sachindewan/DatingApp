@@ -28,16 +28,20 @@ namespace DatingApp.API.Data
 
         public async Task<User> GetUser(int userId)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(d=>d.Id==userId);
+            var user = await _context.Users.FirstOrDefaultAsync(d => d.Id == userId);
             return user;
         }
-
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            var users = await _context.Users.OrderByDescending(o => o.UserName).ToListAsync();
+            return users;
+        }
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            var users =  _context.Users.OrderByDescending(o=>o.LastActive).AsQueryable();
+            var users = _context.Users.OrderByDescending(o => o.LastActive).AsQueryable();
             users = users.Where(u => u.Id != userParams.UserId);
             users = users.Where(u => u.Gender == userParams.Gender);
-            if(userParams.MinAge!=18 || userParams.Maxage != 99)
+            if (userParams.MinAge != 18 || userParams.Maxage != 99)
             {
                 var minDob = DateTime.Today.AddYears(-userParams.Maxage - 1);
                 var maxAge = DateTime.Today.AddYears(-userParams.MinAge - 1);
@@ -59,8 +63,8 @@ namespace DatingApp.API.Data
             {
                 switch (userParams.OrderBy)
                 {
-                    case "created": 
-                        users=users.OrderByDescending(o => o.Created);
+                    case "created":
+                        users = users.OrderByDescending(o => o.Created);
                         break;
                     default:
                         users = users.OrderByDescending(o => o.LastActive);
@@ -91,7 +95,7 @@ namespace DatingApp.API.Data
 
         public async Task<Like> GetLike(int userId, int reciepentId)
         {
-            var like =await _context.Likes.FirstOrDefaultAsync(x=>x.LikerId==userId && x.LikeeId ==reciepentId);
+            var like = await _context.Likes.FirstOrDefaultAsync(x => x.LikerId == userId && x.LikeeId == reciepentId);
             return like;
         }
 
@@ -119,13 +123,13 @@ namespace DatingApp.API.Data
             switch (messageParams.MessageContainer)
             {
                 case "Inbox":
-                    messages = messages.Where(m => m.RecieverId == messageParams.UserId && m.Recieverdeleted==false);
+                    messages = messages.Where(m => m.RecieverId == messageParams.UserId && m.Recieverdeleted == false);
                     break;
                 case "Outbox":
-                    messages = messages.Where(m => m.SenderId == messageParams.UserId && m.Senderdeleted==false);
+                    messages = messages.Where(m => m.SenderId == messageParams.UserId && m.Senderdeleted == false);
                     break;
                 default:
-                    messages = messages.Where(m => m.RecieverId == messageParams.UserId && m.Recieverdeleted==false && m.IsRead == false);
+                    messages = messages.Where(m => m.RecieverId == messageParams.UserId && m.Recieverdeleted == false && m.IsRead == false);
                     break;
             }
             messages = messages.OrderByDescending(d => d.MessageSent);
@@ -135,7 +139,7 @@ namespace DatingApp.API.Data
 
         public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
         {
-            var messages = await _context.Messages.Where(m => m.RecieverId == userId && m.SenderId == recipientId && m.Recieverdeleted==false || m.RecieverId == recipientId && m.SenderId == userId && m.Senderdeleted==false)
+            var messages = await _context.Messages.Where(m => m.RecieverId == userId && m.SenderId == recipientId && m.Recieverdeleted == false || m.RecieverId == recipientId && m.SenderId == userId && m.Senderdeleted == false)
                 .OrderByDescending(m => m.MessageSent)
                 .ToListAsync();
             return messages;

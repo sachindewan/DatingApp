@@ -10,3 +10,7 @@
 input[type='file'] {
   color: transparent;
 }
+
+.div-opacity {
+  opacity: 0.4;
+}

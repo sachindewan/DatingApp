@@ -172,6 +172,43 @@ namespace DatingApp.API.Controllers
 
             return BadRequest("Failed to delete the photo");
         }
+        [Authorize(Policy =SD.PhotoModerate)]
+        [HttpGet("getUnApprovedPhoto")]
+        public async Task<IActionResult> GetAllUnApprovedPhoto(int userId)
+        {
+            if (userId != int.Parse(HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+            var userFromRepo = await _repo.GetUsers();
+
+            if (userFromRepo == null)
+            {
+                return NotFound();
+            }
+            List<Photo> photos = new List<Photo>();
+            userFromRepo.ToList().ForEach(element =>
+            {
+                photos.AddRange(element.Photos.Where(p => !p.IsApproved).ToList());
+            });
+            var photosToReturn = _mapper.Map<IEnumerable<PhotoForDetailedDto>>(photos);
+            return Ok(photosToReturn);
+        }
+
+        [HttpGet("approve/{Id}")]
+        [Authorize(Policy = SD.PhotoModerate)]
+        public async Task<IActionResult> Approve(int userId , int Id)
+        {
+            var photo = await _repo.GetPhoto(Id);
+            if (photo == null) return BadRequest();
+
+            photo.IsApproved = true;
+            if (await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest("failed to approve the photo");
+        }
     }
 
 }

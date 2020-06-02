@@ -15,6 +15,7 @@ import { MemberEditResolver } from './_resolver/member-edit-resolver';
 import { PreventUnSavedChages } from './_guards/prevent-unsaved-changes.guard';
 import { ListResolver } from './_resolver/list-resolver';
 import { MessageResolver } from './_resolver/message-resolver';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 export const routes: Routes = [
   {
@@ -51,6 +52,11 @@ export const routes: Routes = [
         path: 'messages',
         component: MessagesComponent,
         resolve: { messages: MessageResolver },
+      },
+      {
+        path: 'admin',
+        component: AdminPanelComponent,
+        data: { roles: ['Admin', 'Moderator'] },
       },
     ],
   },

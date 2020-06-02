@@ -123,4 +123,14 @@ export class UserService {
       .post(this.baseUrl + userId + '/messages/' + messageId + '/read', {})
       .subscribe();
   }
+  getPendingForApprovalPhoto(userId: number) {
+    return this.http.get(
+      environment.baseUrl + 'users/' + userId + '/photos/getUnApprovedPhoto'
+    );
+  }
+  approvePhoto(userId: number, Id: number) {
+    return this.http.get(
+      environment.baseUrl + 'users/' + userId + '/photos/approve/' + Id
+    );
+  }
 }

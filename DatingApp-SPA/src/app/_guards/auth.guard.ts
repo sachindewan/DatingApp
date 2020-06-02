@@ -21,6 +21,17 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
+    const roles = route.firstChild.data['roles'] as Array<string>;
+
+    if (roles) {
+      const isAccesseable = this.authService.roleMatch(roles);
+      if (isAccesseable) {
+        return true;
+      } else {
+        this.router.navigate(['/member']);
+        this.alertify.error('you are not authorized to access this area');
+      }
+    }
     if (this.authService.loggedIn()) {
       return true;
     }

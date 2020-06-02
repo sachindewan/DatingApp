@@ -44,7 +44,7 @@ namespace DatingApp.API
             services.AddDbContext<DataContext>(x =>
             {
                 x.UseLazyLoadingProxies();
-                x.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             ConfigureServices(services);
         }
@@ -81,6 +81,14 @@ namespace DatingApp.API
                         ValidateAudience = false
                     };
                 });
+
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy(SD.AdminOnly, policy => policy.RequireRole(SD.Admin));
+                opt.AddPolicy(SD.PhotoModerate, policy => policy.RequireRole(SD.Admin,SD.Moderator));
+                opt.AddPolicy(SD.VipOnly, policy => policy.RequireRole("Vip"));
+            });
+
             services.AddMvc(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
